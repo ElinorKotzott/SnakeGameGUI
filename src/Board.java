@@ -11,7 +11,7 @@ public class Board extends JPanel {
     private int height;
     private int width;
     private int moveSpeed;
-    private int numberOfComponents = 4;
+    private int numberOfComponents = 8;
     private List<SnakeComponent> snakeComponentsList = new ArrayList<>();
     private Game game;
     private int moveDirection = KeyEvent.VK_LEFT;

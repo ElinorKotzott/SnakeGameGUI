@@ -12,6 +12,10 @@ public class SnakeComponent {
 
     }
 
+    public boolean checkIfCoordinatesAreSame (SnakeComponent s) {
+        return (s.getX() == x && s.getY() == y);
+    }
+
     public boolean isHead() {
         return isHead;
     }

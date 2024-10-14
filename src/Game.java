@@ -27,7 +27,10 @@ public class Game {
             return;
         }
 
+        // put that into methods
+
         if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getX() > -1) {
+
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
                 snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
@@ -36,6 +39,12 @@ public class Game {
             runnable.run();
             if (snakeComponentsList.get(0).getX() <= -1) {
                 gameOver = true;
+            }
+
+            for (int i = 1; i < snakeComponentsList.size(); i++) {
+                if (snakeComponentsList.get(i).checkIfCoordinatesAreSame(snakeComponentsList.get(0))) {
+                    gameOver = true;
+                }
             }
         }
 
@@ -51,6 +60,12 @@ public class Game {
             if (snakeComponentsList.get(0).getY() <= -1) {
                 gameOver = true;
             }
+
+            for (int i = 1; i < snakeComponentsList.size(); i++) {
+                if (snakeComponentsList.get(i).checkIfCoordinatesAreSame(snakeComponentsList.get(0))) {
+                    gameOver = true;
+                }
+            }
         }
 
 
@@ -64,7 +79,13 @@ public class Game {
             if (snakeComponentsList.get(0).getY() >= height) {
                 gameOver = true;
             }
+            for (int i = 1; i < snakeComponentsList.size(); i++) {
+                if (snakeComponentsList.get(i).checkIfCoordinatesAreSame(snakeComponentsList.get(0))) {
+                    gameOver = true;
+                }
+            }
         }
+
         if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width) {
 
             for (int i = 1; i < snakeComponentsList.size(); i++) {
@@ -75,6 +96,11 @@ public class Game {
             runnable.run();
             if (snakeComponentsList.get(0).getX() >= width) {
                 gameOver = true;
+            }
+            for (int i = 1; i < snakeComponentsList.size(); i++) {
+                if (snakeComponentsList.get(i).checkIfCoordinatesAreSame(snakeComponentsList.get(0))) {
+                    gameOver = true;
+                }
             }
         }
 
