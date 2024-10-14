@@ -109,6 +109,9 @@ public class Board extends JPanel {
             } else {
                 g.fillRect(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectWidth, rectHeight);
             }
+
+
+
     }
 
 

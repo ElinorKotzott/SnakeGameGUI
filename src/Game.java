@@ -9,10 +9,6 @@ public class Game {
     private static final int RIGHT_ARROW = 39;
     private static final int UP_ARROW = 38;
     private static final int DOWN_ARROW = 40;
-    private static final int W = 87;
-    private static final int D = 68;
-    private static final int A = 65;
-    private static final int S = 83;
 
 
     public Game(Runnable runnable, int height, int width, int moveSpeed) {
@@ -25,7 +21,7 @@ public class Game {
     public void moveSnake(int moveDirection, List<SnakeComponent> snakeComponentsList, int rectWidth, int rectHeight) {
 
 
-        if (moveDirection == LEFT_ARROW) {
+        if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getX() > -1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
                 snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
@@ -34,7 +30,8 @@ public class Game {
             runnable.run();
         }
 
-        if (moveDirection == UP_ARROW) {
+
+        if (moveDirection == UP_ARROW && snakeComponentsList.get(0).getY() > -1) {
 
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
@@ -44,12 +41,8 @@ public class Game {
             runnable.run();
         }
 
-// up: head moves up - y gets increased, x stays the same
-        // second element gets old snake head values
-        // it'S exactly the same as before: last element inherits values from the element before -  new instances of snakecomponent for each index are made
-        // but: head gets a new value: Y is now - (rectHeight+4)
 
-        if (moveDirection == DOWN_ARROW) {
+        if (moveDirection == DOWN_ARROW && snakeComponentsList.get(0).getY() < height-1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
                 snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
@@ -57,7 +50,7 @@ public class Game {
             snakeComponentsList.get(0).setY(snakeComponentsList.get(0).getY() + rectHeight + 4);
             runnable.run();
         }
-        if (moveDirection == RIGHT_ARROW) {
+        if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width ) {
 
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
@@ -68,15 +61,13 @@ public class Game {
         }
 
 
-        if (snakeComponentsList.get())
-
     }
-
 
 
 }
 
 
-
 // wenn der snake head Koordinaten erreicht, die außerhalb des Spielfelds liegen, also: negative in x oder y- Richtung oder
-// größerer als length und width des Spielfeldes, dann ist das Spiel verloren - clear the list, methode für jpanel, die Strings annimmt - game over wird angezeigt
+// größere als length und width des Spielfeldes, dann ist das Spiel verloren - clear the list, methode für jpanel, die Strings annimmt - game over wird angezeigt
+// spieler verliegt auch, wenn die snake sich selbst berührt - also wenn der snake head dieselbe position hat wie eines der Körperteile. wenn
+// die position gleich ist, dann trotzdem noch repaint und dann das spiel beenden
