@@ -19,6 +19,8 @@ public class Board extends JPanel {
     int rectWidth = 10;
     private Timer movementTimer;
     private int delay;
+    boolean swapEndGameColor;
+    int endGameColorSwapCounter;
 
 
     public Board(int height, int width, int speed) {
@@ -100,7 +102,25 @@ public class Board extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.green);
+
+
+        if (game.isGameOver()) {
+            if (endGameColorSwapCounter == 10) {
+                System.exit(0);
+            }
+            if(swapEndGameColor) {
+                g.setColor(Color.cyan);
+
+            } else {
+                g.setColor(Color.red);
+            }
+            swapEndGameColor = !swapEndGameColor;
+            endGameColorSwapCounter++;
+        } else {
+            g.setColor(Color.green);
+        }
+
+
         int i;
 
         for (i = 0; i < snakeComponentsList.size(); i++)
@@ -110,16 +130,7 @@ public class Board extends JPanel {
                 g.fillRect(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectWidth, rectHeight);
             }
 
-        if (game.isGameOver()) {
-            for (int m = 0; m < 2; m++) {
-                g.setColor(Color.cyan);
-                repaint();
-                g.setColor(Color.green);
-                repaint();
-            }
 
-
-        }
 
     }
 

@@ -23,9 +23,9 @@ public class Game {
     }
 
     public void moveSnake(int moveDirection, List<SnakeComponent> snakeComponentsList, int rectWidth, int rectHeight) {
-if (gameOver) {
-    return;
-}
+        if (gameOver) {
+            return;
+        }
 
         if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getX() > -1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
@@ -65,7 +65,7 @@ if (gameOver) {
                 gameOver = true;
             }
         }
-        if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width ) {
+        if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width) {
 
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
