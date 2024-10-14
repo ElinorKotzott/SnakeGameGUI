@@ -110,7 +110,16 @@ public class Board extends JPanel {
                 g.fillRect(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectWidth, rectHeight);
             }
 
+        if (game.isGameOver()) {
+            for (int m = 0; m < 2; m++) {
+                g.setColor(Color.cyan);
+                repaint();
+                g.setColor(Color.green);
+                repaint();
+            }
 
+
+        }
 
     }
 

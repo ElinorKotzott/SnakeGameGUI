@@ -9,7 +9,11 @@ public class Game {
     private static final int RIGHT_ARROW = 39;
     private static final int UP_ARROW = 38;
     private static final int DOWN_ARROW = 40;
+    private boolean gameOver;
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     public Game(Runnable runnable, int height, int width, int moveSpeed) {
         this.runnable = runnable;
@@ -19,7 +23,9 @@ public class Game {
     }
 
     public void moveSnake(int moveDirection, List<SnakeComponent> snakeComponentsList, int rectWidth, int rectHeight) {
-
+if (gameOver) {
+    return;
+}
 
         if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getX() > -1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
@@ -28,6 +34,9 @@ public class Game {
             }
             snakeComponentsList.get(0).setX(snakeComponentsList.get(0).getX() - (rectWidth + 4));
             runnable.run();
+            if (snakeComponentsList.get(0).getX() <= -1) {
+                gameOver = true;
+            }
         }
 
 
@@ -39,16 +48,22 @@ public class Game {
             }
             snakeComponentsList.get(0).setY(snakeComponentsList.get(0).getY() - (rectHeight + 4));
             runnable.run();
+            if (snakeComponentsList.get(0).getY() <= -1) {
+                gameOver = true;
+            }
         }
 
 
-        if (moveDirection == DOWN_ARROW && snakeComponentsList.get(0).getY() < height-1) {
+        if (moveDirection == DOWN_ARROW && snakeComponentsList.get(0).getY() < height) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
                 snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
             }
             snakeComponentsList.get(0).setY(snakeComponentsList.get(0).getY() + rectHeight + 4);
             runnable.run();
+            if (snakeComponentsList.get(0).getY() >= height) {
+                gameOver = true;
+            }
         }
         if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width ) {
 
@@ -58,6 +73,9 @@ public class Game {
             }
             snakeComponentsList.get(0).setX(snakeComponentsList.get(0).getX() + rectWidth + 4);
             runnable.run();
+            if (snakeComponentsList.get(0).getX() >= width) {
+                gameOver = true;
+            }
         }
 
 
