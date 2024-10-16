@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Board extends JPanel {
 
@@ -15,12 +16,15 @@ public class Board extends JPanel {
     private List<SnakeComponent> snakeComponentsList = new ArrayList<>();
     private Game game;
     private int moveDirection = KeyEvent.VK_LEFT;
-    int rectHeight = 10;
-    int rectWidth = 10;
+    int rectSizeInPixels = 10;
     private Timer movementTimer;
     private int delay;
     boolean swapEndGameColor;
     int endGameColorSwapCounter;
+    private TravelDirection travelDirection = new TravelDirection(Direction.LEFT);
+    private int appleX;
+    private int appleY;
+    private boolean noAppleThere = true;
 
 
     public Board(int height, int width, int speed) {
@@ -31,17 +35,16 @@ public class Board extends JPanel {
         this.height = height;
         this.width = width;
         this.moveSpeed = speed;
-        game = new Game(this::repaint, height, width, moveSpeed);
+        game = new Game(this::repaint, height, width, moveSpeed, travelDirection);
 
-        //
 
         for (int i = 0; i < numberOfComponents; i++) {
             snakeComponentsList.add(i, new SnakeComponent());
             if (i == 0) {
                 snakeComponentsList.get(i).setHead(true);
             }
-            snakeComponentsList.get(i).setX(width * 6 / 10 + i * (rectWidth + 4));
-            snakeComponentsList.get(i).setY(height / 2 - rectHeight / 2);
+            snakeComponentsList.get(i).setX(300+i*10);
+            snakeComponentsList.get(i).setY(300);
         }
 
 
@@ -50,25 +53,25 @@ public class Board extends JPanel {
                 int keyCode = ke.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT:
-                        if (moveDirection == KeyEvent.VK_RIGHT) {
+                        if (moveDirection == KeyEvent.VK_RIGHT || Objects.equals(travelDirection.getTravelDirection(), Direction.RIGHT)) {
                             return;
                         }
                         moveDirection = KeyEvent.VK_LEFT;
                         break;
                     case KeyEvent.VK_RIGHT:
-                        if (moveDirection == KeyEvent.VK_LEFT) {
+                        if (moveDirection == KeyEvent.VK_LEFT || Objects.equals(travelDirection.getTravelDirection(), Direction.LEFT)) {
                             return;
                         }
                         moveDirection = KeyEvent.VK_RIGHT;
                         break;
                     case KeyEvent.VK_UP:
-                        if (moveDirection == KeyEvent.VK_DOWN) {
+                        if (moveDirection == KeyEvent.VK_DOWN || Objects.equals(travelDirection.getTravelDirection(), Direction.DOWN)) {
                             return;
                         }
                         moveDirection = KeyEvent.VK_UP;
                         break;
                     case KeyEvent.VK_DOWN:
-                        if (moveDirection == KeyEvent.VK_UP) {
+                        if (moveDirection == KeyEvent.VK_UP || Objects.equals(travelDirection.getTravelDirection(), Direction.UP)) {
                             return;
                         }
                         moveDirection = KeyEvent.VK_DOWN;
@@ -76,6 +79,13 @@ public class Board extends JPanel {
                 }
 
             }
+
+
+            // problem: snake travel direction can be very quickly changed by the player so that e. g. moving right while travelling left is allowed. quickly changing direction and then
+            // going in a direction that is not allowed can result in the snake eating itself. new variable needed: actual travel direction of the snake. it
+            // has to be compared to the movement that the player enters. if travel direction is left for instance, user cannot move right - even if he enters
+            // other movement commands before
+
 
         });
 
@@ -88,7 +98,7 @@ public class Board extends JPanel {
         }
 
         movementTimer = new Timer(delay, e -> {
-            game.moveSnake(moveDirection, snakeComponentsList, rectWidth, rectHeight);
+            game.moveSnake(moveDirection, snakeComponentsList, rectSizeInPixels);
             repaint();
         });
         movementTimer.start();
@@ -103,12 +113,11 @@ public class Board extends JPanel {
         super.paintComponent(g);
 
 
-
         if (game.isGameOver()) {
             if (endGameColorSwapCounter == 10) {
                 System.exit(0);
             }
-            if(swapEndGameColor) {
+            if (swapEndGameColor) {
                 g.setColor(Color.cyan);
 
             } else {
@@ -125,13 +134,34 @@ public class Board extends JPanel {
 
         for (i = 0; i < snakeComponentsList.size(); i++)
             if (snakeComponentsList.get(i).isHead()) {
-                g.fillOval(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectWidth, rectHeight);
+                if (!game.isGameOver()) {
+                    g.setColor(Color.yellow);
+                }
+                g.fillOval(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectSizeInPixels, rectSizeInPixels);
+                snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY);
+                if (!game.isGameOver()) {
+                    g.setColor(Color.green);
+                }
             } else {
-                g.fillRect(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectWidth, rectHeight);
+                g.fillOval(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectSizeInPixels, rectSizeInPixels);
             }
 
+        if (noAppleThere) {
+            createNewApple();
+            g.setColor(Color.red);
+            g.fillOval(appleX, appleY, rectSizeInPixels, rectSizeInPixels);
+            noAppleThere = false;
+        } else {
+            g.setColor(Color.red);
+            g.fillOval(appleX, appleY, rectSizeInPixels, rectSizeInPixels);
+        }
 
 
+    }
+
+    public void createNewApple() {
+        appleX = (int)(Math.random() * (width/10))*10;
+        appleY = (int) (Math.random() * (height/10))*10;
     }
 
 

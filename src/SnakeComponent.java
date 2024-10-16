@@ -3,7 +3,7 @@ public class SnakeComponent {
     private int x;
     private int y;
 
-    public SnakeComponent (int x, int y) {
+    public SnakeComponent(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -12,8 +12,12 @@ public class SnakeComponent {
 
     }
 
-    public boolean checkIfCoordinatesAreSame (SnakeComponent s) {
+    public boolean checkIfSnakeEatsItself(SnakeComponent s) {
         return (s.getX() == x && s.getY() == y);
+    }
+
+    public boolean checkIfAppleIsEaten(int appleX, int appleY) {
+return (appleX == x && appleY == y);
     }
 
     public boolean isHead() {

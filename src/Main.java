@@ -8,7 +8,7 @@ public class Main {
 
 
         JFrame jframe = new JFrame("EllysSnakeGame");
-        Board board = new Board(500, 600, 1);
+        Board board = new Board(400, 600, 3);
 
 
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
