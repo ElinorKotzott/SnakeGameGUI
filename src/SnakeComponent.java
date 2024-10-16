@@ -7,6 +7,8 @@ public class SnakeComponent {
         coord = new Coord(x, y);
     }
 
+// could the following methods be put in one?
+
     public boolean checkIfSnakeEatsItself(SnakeComponent s) {
         return (s.getCoord().getX() == this.getCoord().getX() && s.getCoord().getY() == this.getCoord().getY());
     }
