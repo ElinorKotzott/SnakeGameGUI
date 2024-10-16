@@ -1,23 +1,18 @@
 public class SnakeComponent {
     private boolean isHead;
-    private int x;
-    private int y;
+    private Coord coord;
+
 
     public SnakeComponent(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public SnakeComponent() {
-
+        coord = new Coord(x, y);
     }
 
     public boolean checkIfSnakeEatsItself(SnakeComponent s) {
-        return (s.getX() == x && s.getY() == y);
+        return (s.getCoord().getX() == this.getCoord().getX() && s.getCoord().getY() == this.getCoord().getY());
     }
 
     public boolean checkIfAppleIsEaten(int appleX, int appleY) {
-return (appleX == x && appleY == y);
+        return (appleX == this.getCoord().getX() && appleY == this.getCoord().getY());
     }
 
     public boolean isHead() {
@@ -28,19 +23,7 @@ return (appleX == x && appleY == y);
         isHead = head;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Coord getCoord() {
+        return coord;
     }
 }

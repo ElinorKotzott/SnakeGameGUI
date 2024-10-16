@@ -39,12 +39,10 @@ public class Board extends JPanel {
 
 
         for (int i = 0; i < numberOfComponents; i++) {
-            snakeComponentsList.add(i, new SnakeComponent());
+            snakeComponentsList.add(i, new SnakeComponent(300 + i * 10, 300));
             if (i == 0) {
                 snakeComponentsList.get(i).setHead(true);
             }
-            snakeComponentsList.get(i).setX(300+i*10);
-            snakeComponentsList.get(i).setY(300);
         }
 
 
@@ -137,13 +135,14 @@ public class Board extends JPanel {
                 if (!game.isGameOver()) {
                     g.setColor(Color.yellow);
                 }
-                g.fillOval(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectSizeInPixels, rectSizeInPixels);
+                g.fillOval(snakeComponentsList.get(i).getCoord().getX(), snakeComponentsList.get(i).getCoord().getY(), rectSizeInPixels, rectSizeInPixels);
+                // return value is never used
                 snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY);
                 if (!game.isGameOver()) {
                     g.setColor(Color.green);
                 }
             } else {
-                g.fillOval(snakeComponentsList.get(i).getX(), snakeComponentsList.get(i).getY(), rectSizeInPixels, rectSizeInPixels);
+                g.fillOval(snakeComponentsList.get(i).getCoord().getX(), snakeComponentsList.get(i).getCoord().getY(), rectSizeInPixels, rectSizeInPixels);
             }
 
         if (noAppleThere) {
@@ -160,8 +159,14 @@ public class Board extends JPanel {
     }
 
     public void createNewApple() {
-        appleX = (int)(Math.random() * (width/10))*10;
-        appleY = (int) (Math.random() * (height/10))*10;
+        List<Coord> appleCoordinatesList = new ArrayList<>();
+        for (int i = 0; i < width / 10; i++) {
+            for (int j = 0; j < height / 10; j++) {
+                appleCoordinatesList.add(new Coord(i * 10, j * 10));
+            }
+        }
+        appleX = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getX();
+        appleY = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getX();
     }
 
 

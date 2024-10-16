@@ -32,15 +32,15 @@ public class Game {
         // put that into a method and also: rectWidth or height + 4 should be one singular variable
         // put runnable.run to the end
 
-        if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getX() > -1) {
+        if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getCoord().getX() > -1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
-                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
+                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getCoord().getX(), s.getCoord().getY()));
             }
-            snakeComponentsList.get(0).setX(snakeComponentsList.get(0).getX() - (rectSizeInPixels));
+            snakeComponentsList.get(0).getCoord().setX(snakeComponentsList.get(0).getCoord().getX() - (rectSizeInPixels));
             runnable.run();
             travelDirection.setTravelDirection(Direction.LEFT);
-            if (snakeComponentsList.get(0).getX() <= -1) {
+            if (snakeComponentsList.get(0).getCoord().getX() <= -1) {
                 gameOver = true;
             }
 
@@ -52,15 +52,15 @@ public class Game {
         }
 
 
-        if (moveDirection == UP_ARROW && snakeComponentsList.get(0).getY() > -1) {
+        if (moveDirection == UP_ARROW && snakeComponentsList.get(0).getCoord().getY() > -1) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
-                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
+                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getCoord().getX(), s.getCoord().getY()));
             }
-            snakeComponentsList.get(0).setY(snakeComponentsList.get(0).getY() - rectSizeInPixels);
+            snakeComponentsList.get(0).getCoord().setY(snakeComponentsList.get(0).getCoord().getY() - rectSizeInPixels);
             runnable.run();
             travelDirection.setTravelDirection(Direction.UP);
-            if (snakeComponentsList.get(0).getY() <= -1) {
+            if (snakeComponentsList.get(0).getCoord().getY() <= -1) {
                 gameOver = true;
             }
 
@@ -72,15 +72,15 @@ public class Game {
         }
 
 
-        if (moveDirection == DOWN_ARROW && snakeComponentsList.get(0).getY() < height) {
+        if (moveDirection == DOWN_ARROW && snakeComponentsList.get(0).getCoord().getY() < height) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
-                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
+                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getCoord().getX(), s.getCoord().getY()));
             }
-            snakeComponentsList.get(0).setY(snakeComponentsList.get(0).getY() + rectSizeInPixels);
+            snakeComponentsList.get(0).getCoord().setY(snakeComponentsList.get(0).getCoord().getY() + rectSizeInPixels);
             runnable.run();
             travelDirection.setTravelDirection(Direction.DOWN);
-            if (snakeComponentsList.get(0).getY() >= height) {
+            if (snakeComponentsList.get(0).getCoord().getY() >= height) {
                 gameOver = true;
             }
             for (int i = 1; i < snakeComponentsList.size(); i++) {
@@ -90,15 +90,15 @@ public class Game {
             }
         }
 
-        if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getX() < width) {
+        if (moveDirection == RIGHT_ARROW && snakeComponentsList.get(0).getCoord().getX() < width) {
             for (int i = 1; i < snakeComponentsList.size(); i++) {
                 SnakeComponent s = snakeComponentsList.get(snakeComponentsList.size() - (i + 1));
-                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getX(), s.getY()));
+                snakeComponentsList.set(snakeComponentsList.size() - (i), new SnakeComponent(s.getCoord().getX(), s.getCoord().getY()));
             }
-            snakeComponentsList.get(0).setX(snakeComponentsList.get(0).getX() + rectSizeInPixels);
+            snakeComponentsList.get(0).getCoord().setX(snakeComponentsList.get(0).getCoord().getX() + rectSizeInPixels);
             runnable.run();
             travelDirection.setTravelDirection(Direction.RIGHT);
-            if (snakeComponentsList.get(0).getX() >= width) {
+            if (snakeComponentsList.get(0).getCoord().getX() >= width) {
                 gameOver = true;
             }
             for (int i = 1; i < snakeComponentsList.size(); i++) {
