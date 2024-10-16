@@ -79,12 +79,6 @@ public class Board extends JPanel {
             }
 
 
-            // problem: snake travel direction can be very quickly changed by the player so that e. g. moving right while travelling left is allowed. quickly changing direction and then
-            // going in a direction that is not allowed can result in the snake eating itself. new variable needed: actual travel direction of the snake. it
-            // has to be compared to the movement that the player enters. if travel direction is left for instance, user cannot move right - even if he enters
-            // other movement commands before
-
-
         });
 
         if (moveSpeed == 1) {
@@ -137,7 +131,13 @@ public class Board extends JPanel {
                 }
                 g.fillOval(snakeComponentsList.get(i).getCoord().getX(), snakeComponentsList.get(i).getCoord().getY(), rectSizeInPixels, rectSizeInPixels);
                 // return value is never used
-                snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY);
+                if(snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY)) {
+                    g.setColor(Color.green);
+                    snakeComponentsList.add(new SnakeComponent(appleX, appleY));
+                    //g.fillOval(appleX, appleY, rectSizeInPixels, rectSizeInPixels);
+                    noAppleThere = true;
+
+                }
                 if (!game.isGameOver()) {
                     g.setColor(Color.green);
                 }
@@ -166,7 +166,7 @@ public class Board extends JPanel {
             }
         }
         appleX = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getX();
-        appleY = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getX();
+        appleY = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getY();
     }
 
 
