@@ -106,12 +106,20 @@ public class Board extends JPanel {
 
 
         if (game.isGameOver()) {
-            if (endGameColorSwapCounter == 10) {
+            if (endGameColorSwapCounter == 16) {
                 System.exit(0);
             }
+            g.setColor(Color.gray);
+            String str = "Game over";
+            Font font = new Font("Arial", Font.BOLD, 140);
+            g.setFont(font);
+            FontMetrics metrics = g.getFontMetrics(font);
+            int x = (width - metrics.stringWidth(str)) / 2;
+            int y = (height - metrics.getHeight()) / 2 + metrics.getAscent();
+            g.drawString(str, x, y);
+
             if (swapEndGameColor) {
                 g.setColor(Color.cyan);
-
             } else {
                 g.setColor(Color.red);
             }
@@ -130,11 +138,20 @@ public class Board extends JPanel {
                     g.setColor(Color.yellow);
                 }
                 g.fillOval(snakeComponentsList.get(i).getCoord().getX(), snakeComponentsList.get(i).getCoord().getY(), rectSizeInPixels, rectSizeInPixels);
-                // return value is never used
                 if (snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY)) {
                     g.setColor(Color.green);
                     snakeComponentsList.add(new SnakeComponent(appleX, appleY));
-                    //g.fillOval(appleX, appleY, rectSizeInPixels, rectSizeInPixels);
+                    if (snakeComponentsList.size() == width / 10 * height / 10) {
+                        snakeComponentsList.clear();
+                        g.setColor(Color.yellow);
+                        String str = "Congrats, you won!";
+                        Font font = new Font("Arial", Font.BOLD, 100);
+                        g.setFont(font);
+                        FontMetrics metrics = g.getFontMetrics(font);
+                        int x = (width - metrics.stringWidth(str)) / 2;
+                        int y = (height - metrics.getHeight()) / 2 + metrics.getAscent();
+                        g.drawString(str, x, y);
+                    }
                     noAppleThere = true;
 
                 }
@@ -157,6 +174,8 @@ public class Board extends JPanel {
 
 
     }
+// instead: create the appleCoordinatesList outside of this method. use a copy of the list to subtract
+// the position of the snake when it eats an apple to determine apple spawn options
 
     public void createNewApple() {
         List<Coord> appleCoordinatesList = new ArrayList<>();
