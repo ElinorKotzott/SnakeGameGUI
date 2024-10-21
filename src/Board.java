@@ -39,7 +39,7 @@ public class Board extends JPanel {
 
 
         for (int i = 0; i < numberOfComponents; i++) {
-            snakeComponentsList.add(i, new SnakeComponent(300 + i * 10, 300));
+            snakeComponentsList.add(i, new SnakeComponent(50 + i * 10, 50));
             if (i == 0) {
                 snakeComponentsList.get(i).setHead(true);
             }
@@ -51,6 +51,7 @@ public class Board extends JPanel {
                 int keyCode = ke.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT:
+                        // is moveDirection in the if even needed
                         if (moveDirection == KeyEvent.VK_RIGHT || Objects.equals(travelDirection.getTravelDirection(), Direction.RIGHT)) {
                             return;
                         }
@@ -205,3 +206,9 @@ public class Board extends JPanel {
 
     }
 }
+
+// apples sometimes spawn on snake
+// head turns green when snake eats an apple
+// apples can spawn outside of map
+// small map sizes are not possible
+// game over message has to be scaled according to map size
