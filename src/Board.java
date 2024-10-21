@@ -12,7 +12,7 @@ public class Board extends JPanel {
     private int height;
     private int width;
     private int moveSpeed;
-    private int numberOfComponents = 8;
+    private int numberOfComponents = 100;
     private List<SnakeComponent> snakeComponentsList = new ArrayList<>();
     private Game game;
     private int moveDirection = KeyEvent.VK_LEFT;
@@ -140,18 +140,18 @@ public class Board extends JPanel {
                 }
                 g.fillOval(snakeComponentsList.get(i).getCoord().getX(), snakeComponentsList.get(i).getCoord().getY(), rectSizeInPixels, rectSizeInPixels);
                 if (snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY)) {
-                    g.setColor(Color.green);
-                    snakeComponentsList.add(new SnakeComponent(appleX, appleY));
+
+                    snakeComponentsList.add(new SnakeComponent(snakeComponentsList.get(snakeComponentsList.size()-1).getCoord().getX(), snakeComponentsList.get(snakeComponentsList.size()-1).getCoord().getY()));
                     if (snakeComponentsList.size() == width / 10 * height / 10) {
                         snakeComponentsList.clear();
-                        g.setColor(Color.yellow);
-                        String str = "Congrats, you won!";
+                        g.setColor(Color.white);
+                        String winnerMessage = "Congrats, you won!";
                         Font font = new Font("Arial", Font.BOLD, width / 7);
                         g.setFont(font);
                         FontMetrics metrics = g.getFontMetrics(font);
-                        int x = (width - metrics.stringWidth(str)) / 2;
+                        int x = (width - metrics.stringWidth(winnerMessage)) / 2;
                         int y = (height - metrics.getHeight()) / 2 + metrics.getAscent();
-                        g.drawString(str, x, y);
+                        g.drawString(winnerMessage, x, y);
                     }
                     noAppleThere = true;
 
@@ -193,24 +193,24 @@ public class Board extends JPanel {
 //                        .anyMatch(coord -> coord.equals(a))
 //        );
 
+
         for (int i = 0; i < appleCoordinatesList.size(); i++) {
             for (int j = 0; j < snakeComponentsList.size(); j++) {
                 if (appleCoordinatesList.get(i).equals(snakeComponentsList.get(j).getCoord())) {
                     appleCoordinatesList.remove(i);
+                    i--;
                     break;
                 }
             }
         }
 
+
+
         Coord randomCoord = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size()))));
         appleX = randomCoord.getX();
         appleY = randomCoord.getY();
+        System.out.println("X = " + appleX + "Y = " + appleY);
     }
 }
 
-// apples sometimes spawn on snake
-// head turns green when snake eats an apple
-// apples can spawn outside of map
-// small map sizes are not possible
-// game over message has to be scaled according to map size
-// index out of bounds for some small map sizes
+// apples still spawn on snake??
