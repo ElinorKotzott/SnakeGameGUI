@@ -39,7 +39,7 @@ public class Board extends JPanel {
 
 
         for (int i = 0; i < numberOfComponents; i++) {
-            snakeComponentsList.add(i, new SnakeComponent(50 + i * 10, 50));
+            snakeComponentsList.add(i, new SnakeComponent(width, 0));
             if (i == 0) {
                 snakeComponentsList.get(i).setHead(true);
             }
@@ -112,7 +112,7 @@ public class Board extends JPanel {
             }
             g.setColor(Color.gray);
             String str = "Game over";
-            Font font = new Font("Arial", Font.BOLD, 140);
+            Font font = new Font("Arial", Font.BOLD, width / 7);
             g.setFont(font);
             FontMetrics metrics = g.getFontMetrics(font);
             int x = (width - metrics.stringWidth(str)) / 2;
@@ -146,7 +146,7 @@ public class Board extends JPanel {
                         snakeComponentsList.clear();
                         g.setColor(Color.yellow);
                         String str = "Congrats, you won!";
-                        Font font = new Font("Arial", Font.BOLD, 100);
+                        Font font = new Font("Arial", Font.BOLD, width / 7);
                         g.setFont(font);
                         FontMetrics metrics = g.getFontMetrics(font);
                         int x = (width - metrics.stringWidth(str)) / 2;
@@ -197,13 +197,14 @@ public class Board extends JPanel {
             for (int j = 0; j < snakeComponentsList.size(); j++) {
                 if (appleCoordinatesList.get(i).equals(snakeComponentsList.get(j).getCoord())) {
                     appleCoordinatesList.remove(i);
+                    break;
                 }
             }
         }
 
-        appleX = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getX();
-        appleY = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size())))).getY();
-
+        Coord randomCoord = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size()))));
+        appleX = randomCoord.getX();
+        appleY = randomCoord.getY();
     }
 }
 
@@ -212,3 +213,4 @@ public class Board extends JPanel {
 // apples can spawn outside of map
 // small map sizes are not possible
 // game over message has to be scaled according to map size
+// index out of bounds for some small map sizes
