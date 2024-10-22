@@ -1,3 +1,5 @@
+package SnakeGame;
+
 public class SnakeComponent {
     private boolean isHead;
     private Coord coord;

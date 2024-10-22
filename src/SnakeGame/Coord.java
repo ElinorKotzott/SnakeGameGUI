@@ -1,3 +1,5 @@
+package SnakeGame;
+
 import java.util.Objects;
 
 public class Coord {

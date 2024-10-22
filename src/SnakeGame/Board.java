@@ -1,3 +1,5 @@
+package SnakeGame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -25,6 +27,7 @@ public class Board extends JPanel {
     private int appleY;
     private boolean noAppleThere = true;
     private boolean gameWin;
+    Random r = new Random();
 
 
     public Board(int height, int width) {
@@ -168,7 +171,7 @@ public class Board extends JPanel {
 
     public void paintLoserMessage(Graphics g) {
         g.setColor(Color.gray);
-        String str = "Game over";
+        String str = "TestPackage.Game over";
         Font font = new Font("Arial", Font.BOLD, width / 7);
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
@@ -194,7 +197,6 @@ public class Board extends JPanel {
             }
         }
 
-        Random r = new Random();
         Coord randomCoord = appleCoordinatesList.get((r.nextInt(appleCoordinatesList.size())));
         appleX = randomCoord.getX();
         appleY = randomCoord.getY();
