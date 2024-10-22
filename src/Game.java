@@ -16,7 +16,7 @@ public class Game {
         return gameOver;
     }
 
-    public Game(Runnable runnable, int height, int width, int moveSpeed, TravelDirection travelDirection) {
+    public Game(Runnable runnable, int height, int width, TravelDirection travelDirection) {
         this.runnable = runnable;
         this.height = height;
         this.width = width;

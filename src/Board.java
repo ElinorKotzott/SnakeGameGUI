@@ -5,20 +5,19 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class Board extends JPanel {
 
 
     private int height;
     private int width;
-    private int moveSpeed;
     private int numberOfComponents = 47;
     private List<SnakeComponent> snakeComponentsList = new ArrayList<>();
     private Game game;
     private int moveDirection = KeyEvent.VK_LEFT;
     int rectSizeInPixels = 10;
     private Timer movementTimer;
-    private int delay;
     boolean swapEndGameColor;
     int gameOverTickCounter;
     private TravelDirection travelDirection = new TravelDirection(Direction.LEFT);
@@ -28,15 +27,14 @@ public class Board extends JPanel {
     private boolean gameWin;
 
 
-    public Board(int height, int width, int speed) {
+    public Board(int height, int width) {
         setFocusable(true);
         requestFocusInWindow();
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(width, height));
         this.height = height;
         this.width = width;
-        this.moveSpeed = speed;
-        game = new Game(this::repaint, height, width, moveSpeed, travelDirection);
+        game = new Game(this::repaint, height, width, travelDirection);
 
 
         for (int i = 0; i < numberOfComponents; i++) {
@@ -48,8 +46,10 @@ public class Board extends JPanel {
 
 
         addKeyListener(new KeyAdapter() {
+            @Override
             public void keyPressed(KeyEvent ke) {
                 int keyCode = ke.getKeyCode();
+
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT:
                         if (Objects.equals(travelDirection.getTravelDirection(), Direction.RIGHT)) {
@@ -82,14 +82,7 @@ public class Board extends JPanel {
 
         });
 
-        if (moveSpeed == 1) {
-            delay = 300;
-        } else if (moveSpeed == 2) {
-            delay = 200;
-        } else {
-            delay = 120;
-        }
-
+        int delay = 200;
         movementTimer = new Timer(delay, e -> {
             game.moveSnake(moveDirection, snakeComponentsList, rectSizeInPixels, gameWin);
             repaint();
@@ -101,14 +94,13 @@ public class Board extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        g.setColor(Color.green);
 
         if (game.isGameOver()) {
             if (gameOverTickCounter == 16) {
                 System.exit(0);
             }
             paintLoserMessage(g);
-
             if (swapEndGameColor) {
                 g.setColor(Color.cyan);
             } else {
@@ -116,8 +108,6 @@ public class Board extends JPanel {
             }
             swapEndGameColor = !swapEndGameColor;
             gameOverTickCounter++;
-        } else {
-            g.setColor(Color.green);
         }
 
         if (gameWin) {
@@ -130,10 +120,9 @@ public class Board extends JPanel {
         }
 
         for (int i = 0; i < snakeComponentsList.size(); i++)
-            if (snakeComponentsList.get(i).isHead()) {
-                if (!game.isGameOver()) {
-                    g.setColor(Color.yellow);
-                }
+            if (snakeComponentsList.get(i).isHead() && !game.isGameOver()) {
+                g.setColor(Color.yellow);
+
                 if (snakeComponentsList.get(i).checkIfAppleIsEaten(appleX, appleY)) {
                     snakeComponentsList.add(new SnakeComponent(snakeComponentsList.get(snakeComponentsList.size() - 1).getCoord().getX(), snakeComponentsList.get(snakeComponentsList.size() - 1).getCoord().getY()));
                     if (snakeComponentsList.size() == width / 10 * height / 10 - 1) {
@@ -166,7 +155,7 @@ public class Board extends JPanel {
 
     }
 
-    public void paintWinnerMessage(Graphics g){
+    public void paintWinnerMessage(Graphics g) {
         g.setColor(Color.white);
         String winnerMessage = "Congrats, you won!";
         Font font = new Font("Arial", Font.BOLD, width / 7);
@@ -188,9 +177,6 @@ public class Board extends JPanel {
         g.drawString(str, x, y);
     }
 
-// different solution: create the appleCoordinatesList outside of this method. use a copy of the list to subtract
-// the position of the snake when it eats an apple to determine apple spawn options
-
     public void createNewApple() {
         List<Coord> appleCoordinatesList = new ArrayList<>();
         for (int i = 0; i < width / 10; i++) {
@@ -198,15 +184,6 @@ public class Board extends JPanel {
                 appleCoordinatesList.add(new Coord(i * 10, j * 10));
             }
         }
-// alternative solution:
-//
-//        appleCoordinatesList.removeIf(a ->
-//                snakeComponentsList.stream()
-//                        .map(SnakeComponent::getCoord)
-//                        .anyMatch(coord -> coord.equals(a))
-//        );
-
-
         for (int i = 0; i < appleCoordinatesList.size(); i++) {
             for (int j = 0; j < snakeComponentsList.size(); j++) {
                 if (appleCoordinatesList.get(i).equals(snakeComponentsList.get(j).getCoord())) {
@@ -217,8 +194,8 @@ public class Board extends JPanel {
             }
         }
 
-
-        Coord randomCoord = appleCoordinatesList.get((int) ((Math.random() * (appleCoordinatesList.size()))));
+        Random r = new Random();
+        Coord randomCoord = appleCoordinatesList.get((r.nextInt(appleCoordinatesList.size())));
         appleX = randomCoord.getX();
         appleY = randomCoord.getY();
     }
