@@ -24,13 +24,10 @@ public class Game {
         this.travelDirection = travelDirection;
     }
 
-    public void moveSnake(int moveDirection, List<SnakeComponent> snakeComponentsList, int rectSizeInPixels) {
-        if (gameOver) {
+    public void moveSnake(int moveDirection, List<SnakeComponent> snakeComponentsList, int rectSizeInPixels, boolean gameWin) {
+        if (gameOver || gameWin) {
             return;
         }
-
-        // put that into a method
-        // put runnable.run to the end
 
         if (moveDirection == LEFT_ARROW && snakeComponentsList.get(0).getCoord().getX() > -1) {
             moveSnakeComponents(snakeComponentsList, rectSizeInPixels, Direction.LEFT);
